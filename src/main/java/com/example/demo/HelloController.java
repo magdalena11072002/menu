@@ -44,6 +44,7 @@ public class HelloController {
 
     @FXML
     protected void addRectangle(MouseEvent event) {
+
         Circle punktNaPlanszy = new Circle();
         punktNaPlanszy.setLayoutX(event.getX());
         punktNaPlanszy.setLayoutY(event.getY());
@@ -140,6 +141,13 @@ public class HelloController {
         }
 
     }
+
+//    private void ustawienie(boolean b) {
+//        if(b=false){
+//            panelRysowania.getChildren().add(0);
+//        }
+//    }
+
     private void wyczyscPunktyNaPlanszy() {
         panelRysowania.getChildren().removeAll(punktyNaPlanszy);
         punktyNaPlanszy.removeAll(punktyNaPlanszy);
