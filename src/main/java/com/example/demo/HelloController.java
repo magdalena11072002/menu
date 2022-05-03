@@ -106,10 +106,12 @@ public class HelloController {
 
             kolo.setOnMousePressed(e->{
                 promien=e.getSceneX()-kolo.getTranslateX();
+                promien=e.getSceneY()-kolo.getTranslateY();
             });
 
             kolo.setOnMouseDragged(e ->{
                 kolo.setTranslateX(e.getSceneX()-promien);
+                kolo.setTranslateY(e.getSceneY()-promien);
 
             });
 
@@ -123,9 +125,9 @@ public class HelloController {
             panelRysowania.getChildren().add(trojkat);
             wyczyscPunktyNaPlanszy();
 
-            trojkat.setOnMousePressed(e->{
-                trojkat=e.getSceneX()-trojkat.getTranslateX();
-            });
+//            trojkat.setOnMousePressed(e->{
+//                trojkat.getPoints()=e.getSceneX()-trojkat;
+//            });
         }
 
     }
