@@ -20,8 +20,9 @@ public class HelloController {
     private ArrayList<Circle> punktyNaPlanszy = new ArrayList<>();
     private ArrayList<Rectangle> prostokaty = new ArrayList<>();
     private ArrayList<Polygon> trojkaty = new ArrayList<>();
-    private double x,y;
+    private double x,y,x1,y1;
     private double promien;
+
 
     @FXML
     protected void rysujTrojkat() {
@@ -50,7 +51,6 @@ public class HelloController {
         punktNaPlanszy.setFill(Color.BLACK);
         panelRysowania.getChildren().add(punktNaPlanszy);
         punktyNaPlanszy.add(punktNaPlanszy);
-
 
         if (punktyNaPlanszy.toArray().length == 2 && wybranyKsztalt == Ksztalty.PROSTOKAT) {
 
@@ -122,12 +122,21 @@ public class HelloController {
             Polygon trojkat = new Polygon();
             trojkat.getPoints().addAll(punktyNaPlanszy.get(0).getLayoutX(), punktyNaPlanszy.get(0).getLayoutY(), punktyNaPlanszy.get(1).getLayoutX(), punktyNaPlanszy.get(1).getLayoutY(), punktyNaPlanszy.get(2).getLayoutX(), punktyNaPlanszy.get(2).getLayoutY());
 
+            x1=punktyNaPlanszy.get(0).getLayoutX();
+            y1=punktyNaPlanszy.get(0).getLayoutY();
+
             panelRysowania.getChildren().add(trojkat);
             wyczyscPunktyNaPlanszy();
 
-//            trojkat.setOnMousePressed(e->{
-//                trojkat.getPoints()=e.getSceneX()-trojkat;
-//            });
+            trojkat.setOnMousePressed(e->{
+                x1=e.getSceneX()-trojkat.getTranslateX();
+                y1=e.getSceneY()-trojkat.getTranslateY();
+            });
+
+            trojkat.setOnMouseDragged(e ->{
+                trojkat.setTranslateX(e.getSceneX()-x1);
+                trojkat.setTranslateY(e.getSceneY()-y1);
+            });
         }
 
     }
