@@ -29,7 +29,7 @@ public class HelloController {
     private ArrayList<Circle> punktyNaPlanszy = new ArrayList<>();
     private ArrayList<Rectangle> prostokaty = new ArrayList<>();
     private ArrayList<Polygon> trojkaty = new ArrayList<>();
-    private double x, y, x1, y1;
+    private double x, y, x1, y1,x2,y2,x3,y3;
     private double promien;
 
 
@@ -136,9 +136,6 @@ public class HelloController {
                }
            });
 
-
-
-
             wyczyscPunktyNaPlanszy();
         }
 
@@ -197,6 +194,10 @@ public class HelloController {
 
             x1 = punktyNaPlanszy.get(0).getLayoutX();
             y1 = punktyNaPlanszy.get(0).getLayoutY();
+            x2=punktyNaPlanszy.get(1).getLayoutX();
+            y2=punktyNaPlanszy.get(1).getLayoutY();
+            x3=punktyNaPlanszy.get(2).getLayoutX();
+            y3=punktyNaPlanszy.get(2).getLayoutY();
 
             panelRysowania.getChildren().add(trojkat);
             wyczyscPunktyNaPlanszy();
@@ -228,6 +229,10 @@ public class HelloController {
 
             Rotate rotate = new Rotate();
             obrot(rotate);
+            double srodekX=(x1+x2+x3)/3;
+            double srodekY=(y1+y2+y3)/3;
+            rotate.setPivotX(srodekX);
+            rotate.setPivotY(srodekY);
             trojkat.getTransforms().add(rotate);
         }
     }
