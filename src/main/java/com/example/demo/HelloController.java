@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -53,8 +54,13 @@ public class HelloController {
     @FXML
     protected void addRectangle(MouseEvent event) {
 
-        czyDodacPunkt(event, true);
-
+        Circle punktNaPlanszy = new Circle();
+        punktNaPlanszy.setLayoutX(event.getX());
+        punktNaPlanszy.setLayoutY(event.getY());
+        punktNaPlanszy.setRadius(1);
+        punktNaPlanszy.setFill(Color.BLACK);
+        panelRysowania.getChildren().add(punktNaPlanszy);
+        punktyNaPlanszy.add(punktNaPlanszy);
 
         if (punktyNaPlanszy.toArray().length == 2 && wybranyKsztalt == Ksztalty.PROSTOKAT) {
 
@@ -88,14 +94,17 @@ public class HelloController {
 
 
             rectangle.setOnMousePressed(e -> {
+                usunOstatni();
                 x = e.getSceneX() - rectangle.getTranslateX();
                 y = e.getSceneY() - rectangle.getTranslateY();
             });
 
             rectangle.setOnMouseDragged(e -> {
+                usunOstatni();
                 rectangle.setTranslateX(e.getSceneX() - x);
                 rectangle.setTranslateY(e.getSceneY() - y);
             });
+            usunOstatni();
 
             rectangle.setOnScroll(e -> {
                 double zoom = 1.05;
@@ -114,7 +123,20 @@ public class HelloController {
 
             Rotate rotate = new Rotate();
             obrot(rotate);
+            double srodekX=rectangle.getX()+(rectangle.getWidth()/2);
+            double srodekY=rectangle.getY()+(rectangle.getHeight()/2);
+            rotate.setPivotX(srodekX);
+            rotate.setPivotY(srodekY);
+            rotate.setPivotZ(0.0);
             rectangle.getTransforms().add(rotate);
+
+           rectangle.setOnMousePressed(e->{
+               if(e.getButton()== MouseButton.SECONDARY){
+
+               }
+           });
+
+
 
 
             wyczyscPunktyNaPlanszy();
@@ -151,6 +173,18 @@ public class HelloController {
                 } else if (e.getDeltaY() < 0) {
                     kolo.setScaleX(kolo.getScaleX() * (zoom));
                     kolo.setScaleY(kolo.getScaleY() * (zoom));
+                }
+            });
+
+            Rotate rotate = new Rotate();
+            obrot(rotate);
+            kolo.getTransforms().add(rotate);
+
+            final ColorPicker colorpicker = new ColorPicker();
+            colorpicker.setOnMouseClicked(new EventHandler(){
+                public void handle(Event e){
+                    Color c=colorpicker.getValue();
+                    kolo.setFill(c);
                 }
             });
 
@@ -191,8 +225,11 @@ public class HelloController {
                     trojkat.setScaleY(trojkat.getScaleY() * (zoom));
                 }
             });
-        }
 
+            Rotate rotate = new Rotate();
+            obrot(rotate);
+            trojkat.getTransforms().add(rotate);
+        }
     }
 
     private void wyczyscPunktyNaPlanszy() {
@@ -200,15 +237,14 @@ public class HelloController {
         punktyNaPlanszy.removeAll(punktyNaPlanszy);
     }
 
-    private void czyDodacPunkt(MouseEvent e, boolean czyDodac) {
-        if (czyDodac) {
-            Circle punktNaPlanszy = new Circle();
-            punktNaPlanszy.setLayoutX(e.getX());
-            punktNaPlanszy.setLayoutY(e.getY());
-            punktNaPlanszy.setRadius(1);
-            punktNaPlanszy.setFill(Color.BLACK);
-            panelRysowania.getChildren().add(punktNaPlanszy);
-            punktyNaPlanszy.add(punktNaPlanszy);
+
+    private void usunOstatni(){
+        if(punktyNaPlanszy.toArray().length==0){
+            return;
+        }
+        else{
+            panelRysowania.getChildren().remove(punktyNaPlanszy.get(punktyNaPlanszy.toArray().length-1));
+            punktyNaPlanszy.remove(punktyNaPlanszy.get(punktyNaPlanszy.toArray().length-1));
         }
     }
 
@@ -219,16 +255,14 @@ public class HelloController {
         slider.setMajorTickUnit(90);
         slider.setBlockIncrement(10);
         slider.setOrientation(Orientation.VERTICAL);
-        slider.setLayoutX(2);
-        slider.setLayoutY(195);
-        rotate.setPivotX(300);
-        rotate.setPivotY(100);
+        slider.setLayoutX(0);
+        slider.setLayoutY(0);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 rotate.setAngle((double) newValue);
             }
         });
-        panelRysowania.getChildren().;
+        panelRysowania.getChildren().add(slider);
 
 
     }
