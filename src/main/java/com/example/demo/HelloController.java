@@ -6,8 +6,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+
 
 import java.util.ArrayList;
 
@@ -130,9 +133,17 @@ public class HelloController {
             rotate.setPivotZ(0.0);
             rectangle.getTransforms().add(rotate);
 
-           rectangle.setOnMousePressed(e->{
+            rectangle.setOnMousePressed(e->{
                if(e.getButton()== MouseButton.SECONDARY){
+                   final ColorPicker color = new ColorPicker();
 
+                   color.setOnAction(new EventHandler(){
+                       public void handle(Event e){
+                           Color c=color.getValue();
+                           rectangle.setFill(c);
+                       }
+                   });
+                   panelRysowania.getChildren().add(color);
                }
            });
 
@@ -173,15 +184,17 @@ public class HelloController {
                 }
             });
 
-            Rotate rotate = new Rotate();
-            obrot(rotate);
-            kolo.getTransforms().add(rotate);
+            kolo.setOnMousePressed(e->{
+                if(e.getButton()== MouseButton.SECONDARY){
+                    final ColorPicker color = new ColorPicker();
 
-            final ColorPicker colorpicker = new ColorPicker();
-            colorpicker.setOnMouseClicked(new EventHandler(){
-                public void handle(Event e){
-                    Color c=colorpicker.getValue();
-                    kolo.setFill(c);
+                    color.setOnAction(new EventHandler(){
+                        public void handle(Event e){
+                            Color c=color.getValue();
+                            kolo.setFill(c);
+                        }
+                    });
+                    panelRysowania.getChildren().add(color);
                 }
             });
 
@@ -234,6 +247,20 @@ public class HelloController {
             rotate.setPivotX(srodekX);
             rotate.setPivotY(srodekY);
             trojkat.getTransforms().add(rotate);
+
+            trojkat.setOnMousePressed(e->{
+                if(e.getButton()== MouseButton.SECONDARY){
+                    final ColorPicker color = new ColorPicker();
+
+                    color.setOnAction(new EventHandler(){
+                        public void handle(Event e){
+                            Color c=color.getValue();
+                            trojkat.setFill(c);
+                        }
+                    });
+                    panelRysowania.getChildren().add(color);
+                }
+            });
         }
     }
 
@@ -241,7 +268,6 @@ public class HelloController {
         panelRysowania.getChildren().removeAll(punktyNaPlanszy);
         punktyNaPlanszy.removeAll(punktyNaPlanszy);
     }
-
 
     private void usunOstatni(){
         if(punktyNaPlanszy.toArray().length==0){
@@ -261,7 +287,7 @@ public class HelloController {
         slider.setBlockIncrement(10);
         slider.setOrientation(Orientation.VERTICAL);
         slider.setLayoutX(0);
-        slider.setLayoutY(0);
+        slider.setLayoutY(30);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 rotate.setAngle((double) newValue);
